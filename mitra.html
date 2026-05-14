@@ -23,6 +23,74 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             loadMitraList();
+            import React, { useState } from "react";
+
+function App() {
+  const [cart, setCart] = useState([]);
+  const [checkout, setCheckout] = useState(false);
+
+  const products = [
+    { id: 1, name: "Produk A", price: 50000, image: "produkA.jpg" },
+    { id: 2, name: "Produk B", price: 75000, image: "produkB.jpg" },
+  ];
+
+  const addToCart = (product) => {
+    setCart([...cart, product]);
+  };
+
+  const proceedToCheckout = () => {
+    setCheckout(true);
+  };
+
+  return (
+    <div style={{ padding: "20px" }}>
+      <h1>Aplikasi Mitra</h1>
+
+      {!checkout ? (
+        <>
+          <h2>Daftar Produk</h2>
+          <div style={{ display: "flex", gap: "20px" }}>
+            {products.map((p) => (
+              <div key={p.id} style={{ border: "1px solid #ccc", padding: "10px" }}>
+                <img
+                  src={p.image}
+                  alt={p.name}
+                  width="150"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => addToCart(p)}
+                />
+                <h3>{p.name}</h3>
+                <p>Rp {p.price}</p>
+                <button onClick={() => addToCart(p)}>Tambah ke Keranjang</button>
+              </div>
+            ))}
+          </div>
+
+          <h2>Keranjang</h2>
+          <ul>
+            {cart.map((item, index) => (
+              <li key={index}>{item.name} - Rp {item.price}</li>
+            ))}
+          </ul>
+
+          {cart.length > 0 && (
+            <button onClick={proceedToCheckout}>Lanjut ke Pembayaran</button>
+          )}
+        </>
+      ) : (
+        <div>
+          <h2>Halaman Pembayaran</h2>
+          <p>Total: Rp {cart.reduce((sum, item) => sum + item.price, 0)}</p>
+          <button onClick={() => alert("Pembayaran berhasil!")}>
+            Bayar Sekarang
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
         });
     </script>
 </body>
